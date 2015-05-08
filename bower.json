@@ -1,0 +1,21 @@
+{
+  "name": "aronnax-looping",
+  "version": "0.0.1",
+  "authors": [
+    "msecret <msegreto@miceover.com>"
+  ],
+  "description": "General pupose time looping",
+  "main": "dist/index.min.js",
+  "keywords": [
+    "gaming",
+    "performance"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "aronnax-looping",
+  "version": "0.0.1",
+  "description": "General purpose time looping.",
+  "main": "dist/looping.js",
+  "repository": "git@github.com:aronnax/looping.git",
+  "scripts": {
+    "clean": "rm -r dist/*",
+    "compile": "babel src/ -s inline -m common -d dist/",
+    "bundle": "browserify src/looping.js -t babelify -o dist/index.js",
+    "compile-bundle": "browserify src/looping.js -t babelify -t uglifyify -o dist/index.min.js",
+    "compile-all": "npm run compile && npm run compile-bundle",
+    "lint": "eslint src/*.js",
+    "test": "npm run unit-test && npm run integration-test",
+    "unit-test": "testem ci -f test/unit_testem.json -l phantomjs",
+    "integration-test": "testem ci -f test/integration_testem.json -l phantomjs",
+    "watch-unit-test": "testem -f test/unit_testem.json",
+    "watch-integration-test": "testem -f test/integration_testem.json"
+  },
+  "keywords": [
+    "gaming",
+    "performance"
+  ],
+  "author": "Marco Segreto <msegreto@miceover.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.1.13",
+    "babel-eslint": "^3.0.1",
+    "babelify": "^6.0.2",
+    "browserify": "^9.0.8",
+    "eslint": "^0.19.0",
+    "function-bind": "^1.0.2",
+    "phantomjs": "^1.9.16",
+    "redtape": "^1.0.0",
+    "sinon": "^1.14.1",
+    "tape": "^4.0.0",
+    "testem": "^0.8.0-0",
+    "uglifyify": "^3.0.1"
+  }
+}
