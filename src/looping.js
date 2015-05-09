@@ -98,6 +98,7 @@ export var Looping = {
       let afterUpdate = window.performance.now();
       this.lag -= afterUpdate - beforeUpdate;
     }
+    this.constantly(this.lag / this._millisecondsPerFrame);
     this.everyFrame(this.lag / this._millisecondsPerFrame);
     this.updateTimers(this.lag / this._millisecondsPerFrame);
     this.frame++;

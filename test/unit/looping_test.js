@@ -184,12 +184,37 @@ test('tick() updates the timers', t => {
 });
 
 test('tick() calls constantly listeners at least once', t => {
+  var stubClock = sandbox.stub(window.performance, 'now'),
+      spyA = sandbox.spy(),
+      spyB = sandbox.spy();
+
+  loop.previousTime = 90;
+  stubClock.onFirstCall().returns(100);
+  loop.onConstantly(spyA);
+  loop.onConstantly(spyB);
+
+  loop.tick();
+  t.equal(spyA.callCount, 1, 'first listener called once');
+  t.equal(spyB.callCount, 1, 'second listener called once');
 
   t.end();
 });
 
 test('tick() calls constantly listeners more then once when elapsed time ' +
     ' is greater then milliseconds per frame', t => {
+  var stubClock = sandbox.stub(window.performance, 'now'),
+      spy = sandbox.spy(),
+      startTime = 100;
+
+  loop.fps = 60;
+  loop.previousTime = startTime;
+  stubClock.onFirstCall().returns(startTime + 20); // current time
+  stubClock.onSecondCall().returns(startTime + 20); // first while loop time
+  stubClock.onThirdCall().returns(startTime + 40); // first while loop time
+  loop.onConstantly(spy);
+
+  loop.tick();
+  t.equal(spy.callCount, 2, 'first listener called twice');
 
   t.end();
 });
