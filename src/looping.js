@@ -1,25 +1,41 @@
 
 /**
- * @file pooled Holds the Looping module
+ * @file looping Holds the Looping module
  */
+
+import 'babel/polyfill';
 
 const fpsDefault = 60,
       millisecondsPerFrameDefault = 1000 / fpsDefault;
 
 export var Looping = {
 
-  _fps: fpsDefault,
-
-  _millisecondsPerFrame: millisecondsPerFrameDefault,
-
-  requestId: 0,
-
-  _isRunning: false,
-
   _constantlyListeners: [],
   _everyFrameListeners: [],
+  _fps: fpsDefault,
+  _isRunning: false,
+  _millisecondsPerFrame: millisecondsPerFrameDefault,
+  _requestId: 0,
 
+  /**
+   * The number of milliseconds for each frame should be based on
+   * the fps
+   * @type Date
+   */
+  previousTime: 0,
 
+  /**
+   * The lag since the last loop completion, used to determine whether
+   * to update more until the next draw.
+   * @type Boolean
+   */
+  lag: 0,
+
+  /**
+   * The total frames run since the first call.
+   * @type Number
+   */
+  frame: 0,
 
   /**
    * The frames per second the game should run at defaults to 60
@@ -42,25 +58,6 @@ export var Looping = {
     return this._millisecondsPerFrame;
   },
 
-  /**
-   * The number of milliseconds for each frame should be based on
-   * the fps
-   * @type Date
-   */
-  previousTime: 0,
-
-  /**
-   * The lag since the last loop completion, used to determine whether
-   * to update more until the next draw.
-   * @type Boolean
-   */
-  lag: 0,
-
-  /**
-   * The total frames run since the first call.
-   * @type Number
-   */
-  frame: 0,
 
   /**
    * Whether the game is currently running or not, used to actually
@@ -94,12 +91,12 @@ export var Looping = {
 
     while (this.lag >= this._millisecondsPerFrame) {
       let beforeUpdate = window.performance.now()
-      this.constantly(this.lag / this._millisecondsPerFrame);
+      this._constantly(this.lag / this._millisecondsPerFrame);
       let afterUpdate = window.performance.now();
       this.lag -= afterUpdate - beforeUpdate;
     }
-    this.constantly(this.lag / this._millisecondsPerFrame);
-    this.everyFrame(this.lag / this._millisecondsPerFrame);
+    this._constantly(this.lag / this._millisecondsPerFrame);
+    this._everyFrame(this.lag / this._millisecondsPerFrame);
     this.updateTimers(this.lag / this._millisecondsPerFrame);
     this.frame++;
   },
@@ -126,36 +123,40 @@ export var Looping = {
     runner();
   },
 
-  everyFrame(dtMilli) {
-    this.callListeners(this._everyFrameListeners, dtMilli)
-  },
-
-  constantly(dtMilli) {
-    this.callListeners(this._constantlyListeners, dtMilli)
-  },
-
+  /**
+   * Update all the variable time timers.
+   */
   updateTimers() {
 
   },
 
-  callListeners(listeners, dtMilli) {
-    for (let listener of listeners) {
-      listener(dtMilli);
-    }
-  },
-
+  /**
+   * Run a function on every frame. This means it syncs with current fps.
+   * @param {Function} cb The function to call.
+   *
+   * callback function with pass the following params:
+   *   - dtTime: The current time delta.
+   */
   onEveryFrame(cb) {
     this._everyFrameListeners = this._everyFrameListeners || [];
     this._everyFrameListeners.push(cb);
   },
 
+  /**
+   * Run a function as constantly as possible, either on every frame, or if
+   * there's missed frames due to log, run every step.
+   * @param {Function} cb The function to call.
+   *
+   * callback function with pass the following params:
+   *   - dtTime: The current time delta.
+   */
   onConstantly(cb) {
     this._constantlyListeners = this._constantlyListeners || [];
     this._constantlyListeners.push(cb);
   },
 
   /**
-   * Runs the game if not already running, runs the loop with launchLoop.
+   * Runs the game if not already running, sets the game to running.
    */
   start() {
     if (!this._isRunning) {
@@ -165,9 +166,23 @@ export var Looping = {
   },
 
   /**
-   * Stops the game by changing the isRunning variable.
+   * Stops the game by setting it to not running.
    */
   stop() {
     this._isRunning = false;
+  },
+
+  _everyFrame(dtMilli) {
+    this._callListeners(this._everyFrameListeners, dtMilli)
+  },
+
+  _constantly(dtMilli) {
+    this._callListeners(this._constantlyListeners, dtMilli)
+  },
+
+  _callListeners(listeners, dtMilli) {
+    for (let listener of listeners) {
+      listener(dtMilli);
+    }
   }
 };
