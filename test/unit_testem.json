@@ -1,0 +1,12 @@
+{
+  "framework": "tap",
+  "phantomjs_debug_port": 8012,
+  "src_files": [
+    "src/**/*.js",
+    "test/**/*_test.js"
+  ],
+  "serve_files": ["bundle_test.js"],
+  "before_tests": "browserify test/unit.js -t babelify -o bundle_test.js --debug",
+  "on_exit": "rm bundle_test.js",
+  "launch_in_dev": ["phantomjs"]
+}
