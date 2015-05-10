@@ -6,7 +6,7 @@
 import 'babel/polyfill';
 
 const FPS = 60,
-      MILLISECONDSPERFRAME = 100 / FPS,
+      MILLISECONDSPERFRAME = 1000 / FPS,
       USE_POOLING = true;
 
 export var Looping = {
@@ -98,7 +98,7 @@ export var Looping = {
       //this.lag -= afterUpdate - beforeUpdate;
       this.lag -= this.millisecondsPerFrame;
     }
-    //this._constantly(this.lag / this._millisecondsPerFrame);
+    this._constantly(this.lag / this._millisecondsPerFrame);
     this._everyFrame(this.lag / this._millisecondsPerFrame);
     this.updateTimers(this.lag / this._millisecondsPerFrame);
     this.frame++;
@@ -178,15 +178,15 @@ export var Looping = {
     this._isRunning = false;
   },
 
-  onEveryMilli(millis, cb) => {
+  onEveryMilli(millis, cb) {
     throw new Error('Not implemented');
   },
 
-  onEverySecs(secs, cb) => {
+  onEverySecs(secs, cb) {
     throw new Error('Not implemented');
   },
 
-  onEveryMins(mins, cb) => {
+  onEveryMins(mins, cb) {
     throw new Error('Not implemented');
   },
 
