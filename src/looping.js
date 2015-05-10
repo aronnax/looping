@@ -5,16 +5,17 @@
 
 import 'babel/polyfill';
 
-const fpsDefault = 60,
-      millisecondsPerFrameDefault = 1000 / fpsDefault;
+const FPS = 60,
+      MILLISECONDSPERFRAME = 100 / FPS,
+      USE_POOLING = true;
 
 export var Looping = {
 
   _constantlyListeners: [],
   _everyFrameListeners: [],
-  _fps: fpsDefault,
+  _fps: FPS,
   _isRunning: false,
-  _millisecondsPerFrame: millisecondsPerFrameDefault,
+  _millisecondsPerFrame: MILLISECONDSPERFRAME,
   _requestId: 0,
   _frameStop: 0,
 

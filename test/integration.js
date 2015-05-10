@@ -43,6 +43,7 @@ test('onEveryFrame runs every frame with delta time param', t => {
   t.end();
 });
 
+
 test('general interface works', t => {
   /*
   var loop = Object.create(Looping);
