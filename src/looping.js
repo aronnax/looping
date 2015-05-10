@@ -16,6 +16,7 @@ export var Looping = {
   _isRunning: false,
   _millisecondsPerFrame: millisecondsPerFrameDefault,
   _requestId: 0,
+  _frameStop: 0,
 
   /**
    * The number of milliseconds for each frame should be based on
@@ -90,15 +91,20 @@ export var Looping = {
     this.lag += elapsed;
 
     while (this.lag >= this._millisecondsPerFrame) {
-      let beforeUpdate = window.performance.now()
+      //let beforeUpdate = window.performance.now()
       this._constantly(this.lag / this._millisecondsPerFrame);
-      let afterUpdate = window.performance.now();
-      this.lag -= afterUpdate - beforeUpdate;
+      //let afterUpdate = window.performance.now();
+      //this.lag -= afterUpdate - beforeUpdate;
+      this.lag -= this.millisecondsPerFrame;
     }
-    this._constantly(this.lag / this._millisecondsPerFrame);
+    //this._constantly(this.lag / this._millisecondsPerFrame);
     this._everyFrame(this.lag / this._millisecondsPerFrame);
     this.updateTimers(this.lag / this._millisecondsPerFrame);
     this.frame++;
+    if (this._frameStop === this.frame) {
+      this._isRunning = false;
+      this._onFrameStop();
+    }
   },
 
   /**
@@ -110,10 +116,9 @@ export var Looping = {
     var runner,
         self = this;
 
-    this.previousTime = (new Date()).getTime();
+    this.previousTime = window.performance.now();;
     this.lag = 0;
 
-    return;
     runner = () => {
       self.tick();
       if (this._isRunning) {
@@ -170,6 +175,11 @@ export var Looping = {
    */
   stop() {
     this._isRunning = false;
+  },
+
+  _stopOnFrame(frameNumber, cb) {
+    this._frameStop = frameNumber;
+    this._onFrameStop = cb;
   },
 
   _everyFrame(dtMilli) {
