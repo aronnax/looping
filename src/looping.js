@@ -177,6 +177,18 @@ export var Looping = {
     this._isRunning = false;
   },
 
+  onEveryMilli(millis, cb) => {
+    throw new Error('Not implemented');
+  },
+
+  onEverySecs(secs, cb) => {
+    throw new Error('Not implemented');
+  },
+
+  onEveryMins(mins, cb) => {
+    throw new Error('Not implemented');
+  },
+
   _stopOnFrame(frameNumber, cb) {
     this._frameStop = frameNumber;
     this._onFrameStop = cb;
