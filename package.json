@@ -1,6 +1,6 @@
 {
   "name": "aronnax-looping",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "General purpose time looping.",
   "main": "dist/looping.js",
   "repository": "git@github.com:aronnax/looping.git",
