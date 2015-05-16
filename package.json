@@ -7,8 +7,8 @@
   "scripts": {
     "clean": "rm -r dist/*",
     "compile": "babel src/ -s inline -m common -d dist/",
-    "bundle": "browserify src/looping.js -t babelify -o dist/index.js",
-    "compile-bundle": "browserify src/looping.js -t babelify -t uglifyify -o dist/index.min.js",
+    "bundle": "browserify src/looping.js -t [ babelify --optional runtime ] -o dist/index.js",
+    "compile-bundle": "browserify src/looping.js -t [ babelify --optional runtime ] -t uglifyify -o dist/index.min.js",
     "compile-all": "npm run compile && npm run compile-bundle",
     "lint": "eslint src/*.js",
     "test": "npm run unit-test && npm run integration-test",
