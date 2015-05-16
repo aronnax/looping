@@ -3,9 +3,6 @@
  * @file looping Holds the Looping module
  */
 
-if (!global._babelPolyfill) {
-  import 'babel/polyfill';
-}
 
 const FPS = 60,
       MILLISECONDSPERFRAME = 1000 / FPS,

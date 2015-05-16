@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- '0.12'
+- '0.11'
+- '0.10'
+install: npm install
+before_deploy: npm run compile-all
+deploy:
+  provider: npm
+  email: msegreto@miceover.com
+  skip_cleanup: true
+  api_key:
+    secure: Z3qOnh7sV3WAg4a7Q1Hb9PBmXkKW/ddYW7q8gQwqhGRnJnKbmTTBjd9/jGp+IuOgHWizIrbEdCozHLxrKcpF6zBcc01YFLI5m4/P55cRvh7+CZpAzPr5RlfMsf5PZcoyPcHjM8DkWBaW0EbPuuFv+GADYNLSz2uPxS2l7w+azgg=
+  on:
+    branch: master
+    tags: true
